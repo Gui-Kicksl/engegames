@@ -3,7 +3,7 @@ import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
-
+from django.shortcuts import render
 
 def carta_atual(request, partida_id):
     carta = {
@@ -66,5 +66,9 @@ def criar_partida(request):
 
 
     return JsonResponse({'partida_id': '11111111-1111-1111-1111-111111111111', 'total_cartas': 10})
+
+
+def pagina_do_jogo(request):
+    return render(request, "jogo/index.html")
 
 
