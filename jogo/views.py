@@ -1,3 +1,70 @@
-from django.shortcuts import render
+import json
 
-# Create your views here.
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+
+
+def carta_atual(request, partida_id):
+    carta = {
+        "numero": 1,
+        "total": 10,
+        "categoria": "sql",
+        "enunciado": "Um cliente que nunca fez pedido aparece nesse resultado com qual valor em pedidos?",
+        "codigo": "SELECT c.nome, COUNT(p.id) AS pedidos\nFROM cliente c\nLEFT JOIN pedido p ON p.cliente_id = c.id\nGROUP BY c.nome;",
+        "linguagem": "sql",
+        "alternativas": [
+            "Não aparece no resultado",
+            "0",
+            "NULL",
+            "1",
+        ],
+        "segundos": 25,
+    }
+    return JsonResponse(carta)
+
+
+@csrf_exempt  # TEMPORÁRIO — remover na etapa 3
+@require_POST
+def responder(request, partida_id):
+    try:
+        dados = json.loads(request.body)
+    except json.JSONDecodeError:
+        return JsonResponse({"erro": "corpo não é JSON válido"}, status=400)
+
+    escolha = dados.get("escolha")
+    if escolha not in (0, 1, 2, 3):
+        return JsonResponse({"erro": "escolha inválida"}, status=400)
+
+    CORRETA = 1
+    certa = escolha == CORRETA
+
+    julgamento = {
+        "certa": certa,
+        "correta_indice": CORRETA,
+        "explicacao": "O LEFT JOIN mantém o cliente mesmo sem pedido, preenchendo as colunas de pedido com NULL. COUNT(p.id) ignora NULL, então o total é 0.",
+        "pontos_ganhos": 100 if certa else 0,
+        "pontos_total": 100 if certa else 0,
+        "sequencia": 1 if certa else 0,
+        "acabou": False,
+    }
+    return JsonResponse(julgamento, json_dumps_params={"ensure_ascii": False})
+
+@csrf_exempt
+@require_POST
+def criar_partida(request):
+    try:
+        dados = json.loads(request.body)
+    except json.JSONDecodeError:
+        return JsonResponse({"erro": "corpo não é JSON válido"}, status=400)
+
+    baralho = dados.get("baralho")
+
+    baralhos_validos = ['todos', 'sql', 'python', 'logica', 'tech']
+    if baralho not in baralhos_validos:
+        return JsonResponse({"erro": "escolha um dos baralhos"}, status=400)
+
+
+    return JsonResponse({'partida_id': '11111111-1111-1111-1111-111111111111', 'total_cartas': 10})
+
+
