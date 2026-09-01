@@ -1,62 +1,121 @@
+{% load static %}
 <!doctype html>
 <html lang="pt-br">
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Engegames</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap">
+  <link rel="stylesheet" href="{% static 'jogo/css/estilo.css' %}">
 </head>
 <body>
-  <p id="categoria"></p>
-  <h1 id="enunciado"></h1>
-  <pre id="codigo"></pre>
 
-  <button id="alt0"></button>
-  <button id="alt1"></button>
-  <button id="alt2"></button>
-  <button id="alt3"></button>
+<header class="topo">
+  <span class="marca">Engegames</span>
+  <span class="naipes"><i class="v">&diams;</i>&spades;<i class="v">&hearts;</i>&clubs;</span>
+</header>
 
-  <h2 id="veredito"></h2>
-  <p id="explicacao"></p>
+<main>
 
-  <script>
-    const PARTIDA = "11111111-1111-1111-1111-111111111111";
+  <section class="tela ativa" id="tela-menu">
+    <p class="etiqueta">Atividade de extensão</p>
+    <h1>Um baralho que <em>ensina</em> a programar.</h1>
+    <p class="chamada">Cada carta traz uma pergunta e quatro respostas. Você escolhe, a carta vira, e o verso explica por quê.</p>
 
-    async function carregarCarta() {
-      const resposta = await fetch("/api/partidas/" + PARTIDA + "/carta/");
-      const dados = await resposta.json();
+    <div class="baralhos" id="baralhos"></div>
 
-      document.getElementById("categoria").textContent = dados.categoria;
-      document.getElementById("enunciado").textContent = dados.enunciado;
-      document.getElementById("codigo").textContent = dados.codigo;
+    <div class="acoes">
+      <button class="botao" id="btn-comecar">Começar rodada</button>
+      <span class="aviso" id="aviso-menu"></span>
+    </div>
 
-      document.getElementById("alt0").textContent = dados.alternativas[0];
-      document.getElementById("alt1").textContent = dados.alternativas[1];
-      document.getElementById("alt2").textContent = dados.alternativas[2];
-      document.getElementById("alt3").textContent = dados.alternativas[3];
-    }
+    <dl class="regras">
+      <div><dt>Rodada</dt><dd>Até 10 cartas sorteadas, sem repetir.</dd></div>
+      <div><dt>Relógio</dt><dd>25 segundos por carta. O tempo que sobra vira pontos.</dd></div>
+      <div><dt>Sequência</dt><dd>Acertos seguidos multiplicam a pontuação.</dd></div>
+      <div><dt>Descarte</dt><dd>Uma ficha por rodada elimina duas erradas, pela metade dos pontos.</dd></div>
+    </dl>
+  </section>
 
-    async function responder(escolha) {
-      const resposta = await fetch("/api/partidas/" + PARTIDA + "/resposta/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ escolha: escolha })
-      });
-      const julgamento = await resposta.json();
+  <section class="tela" id="tela-jogo">
+    <div class="hud">
+      <div class="pips" id="pips"></div>
+      <div class="indicadores">
+        <span class="ficha" id="relogio">25s</span>
+        <span class="ficha multiplicador" id="multiplicador">&times;1,0</span>
+        <span class="ficha" id="pontos">0 pts</span>
+      </div>
+    </div>
 
-      if (julgamento.certa) {
-        document.getElementById("veredito").textContent = "Acertou!";
-      } else {
-        document.getElementById("veredito").textContent = "Errou.";
-      }
+    <div class="palco" id="palco">
+      <div class="pilha"></div>
+      <div class="carta3d" id="carta3d">
 
-      document.getElementById("explicacao").textContent = julgamento.explicacao;
-    }
+        <article class="face frente">
+          <div class="barra-tempo" id="barra-tempo"></div>
+          <span class="canto ce" id="canto-ce"></span>
+          <span class="canto cd" id="canto-cd"></span>
+          <div class="corpo">
+            <p class="meta" id="meta"></p>
+            <h2 class="pergunta" id="enunciado"></h2>
+            <div id="area-codigo"></div>
+            <div class="alternativas" id="alternativas"></div>
+            <div class="ferramentas">
+              <button class="ferramenta" id="btn-descarte">Descarte &middot; elimina 2</button>
+              <span class="teclas">Teclas <b>1</b><b>2</b><b>3</b><b>4</b> respondem</span>
+            </div>
+          </div>
+        </article>
 
-    document.getElementById("alt0").addEventListener("click", function () { responder(0); });
-    document.getElementById("alt1").addEventListener("click", function () { responder(1); });
-    document.getElementById("alt2").addEventListener("click", function () { responder(2); });
-    document.getElementById("alt3").addEventListener("click", function () { responder(3); });
+        <article class="face verso">
+          <div class="corpo-verso">
+            <div class="veredito-linha">
+              <span class="veredito" id="veredito"></span>
+              <span class="ganho" id="ganho"></span>
+            </div>
+            <div class="resposta-certa">
+              <div class="rotulo">Resposta certa</div>
+              <div id="correta"></div>
+            </div>
+            <p class="porque" id="explicacao"></p>
+            <div class="acoes-verso">
+              <button class="botao" id="btn-proxima">Próxima carta</button>
+            </div>
+          </div>
+        </article>
 
-    carregarCarta();
-  </script>
+      </div>
+    </div>
+  </section>
+
+  <section class="tela" id="tela-resultado">
+    <p class="etiqueta">Fim da rodada</p>
+    <h1 id="titulo-fim">Mão encerrada</h1>
+
+    <div class="placar">
+      <div><div class="pontuacao" id="fim-pontos">0</div><span class="rotulo">pontos</span></div>
+      <div class="numero"><span class="rotulo">Acertos</span><b id="fim-acertos">0/0</b></div>
+      <div class="numero"><span class="rotulo">Melhor sequência</span><b id="fim-sequencia">0</b></div>
+      <div class="numero"><span class="rotulo">Tempo médio</span><b id="fim-tempo">0s</b></div>
+    </div>
+
+    <h3 class="etiqueta">Aproveitamento por naipe</h3>
+    <div class="barras" id="fim-barras"></div>
+
+    <div id="fim-erros"></div>
+
+    <div class="acoes">
+      <button class="botao" id="btn-de-novo">Jogar de novo</button>
+      <button class="botao vazado" id="btn-trocar">Trocar de baralho</button>
+    </div>
+  </section>
+
+</main>
+
+<script src="{% static 'jogo/js/api.js' %}"></script>
+<script src="{% static 'jogo/js/estado.js' %}"></script>
+<script src="{% static 'jogo/js/ui.js' %}"></script>
+<script src="{% static 'jogo/js/app.js' %}"></script>
 </body>
 </html>

@@ -1,0 +1,306 @@
+[
+  {
+    "model": "jogo.pergunta",
+    "pk": 1,
+    "fields": {
+      "categoria": "sql",
+      "dificuldade": 1,
+      "enunciado": "Qual cláusula filtra o resultado depois do agrupamento?",
+      "codigo": "",
+      "linguagem": "",
+      "alternativas": [
+        "WHERE",
+        "HAVING",
+        "ORDER BY",
+        "LIMIT"
+      ],
+      "correta": 1,
+      "explicacao": "WHERE filtra linhas antes da agregação. HAVING roda depois do GROUP BY, sobre os grupos já formados — por isso ele aceita funções como COUNT() e SUM() na condição."
+    }
+  },
+  {
+    "model": "jogo.pergunta",
+    "pk": 2,
+    "fields": {
+      "categoria": "sql",
+      "dificuldade": 2,
+      "enunciado": "Um cliente que nunca fez pedido aparece nesse resultado com qual valor em pedidos?",
+      "codigo": "SELECT c.nome, COUNT(p.id) AS pedidos\nFROM cliente c\nLEFT JOIN pedido p ON p.cliente_id = c.id\nGROUP BY c.nome;",
+      "linguagem": "sql",
+      "alternativas": [
+        "Não aparece no resultado",
+        "0",
+        "NULL",
+        "1"
+      ],
+      "correta": 1,
+      "explicacao": "O LEFT JOIN mantém o cliente mesmo sem pedido, preenchendo as colunas de pedido com NULL. COUNT(p.id) ignora NULL, então o total é 0. Se fosse COUNT(*) o resultado seria 1, porque a linha existe."
+    }
+  },
+  {
+    "model": "jogo.pergunta",
+    "pk": 3,
+    "fields": {
+      "categoria": "sql",
+      "dificuldade": 2,
+      "enunciado": "Essa consulta retorna as linhas em que status é NULL?",
+      "codigo": "SELECT * FROM pedido\nWHERE status <> 'cancelado';",
+      "linguagem": "sql",
+      "alternativas": [
+        "Sim, NULL é diferente de 'cancelado'",
+        "Não, comparar com NULL nunca dá verdadeiro",
+        "Só se houver índice na coluna",
+        "Depende do banco usado"
+      ],
+      "correta": 1,
+      "explicacao": "Qualquer comparação com NULL resulta em UNKNOWN, e o WHERE só mantém o que for TRUE. Para incluir essas linhas: WHERE status <> 'cancelado' OR status IS NULL."
+    }
+  },
+  {
+    "model": "jogo.pergunta",
+    "pk": 4,
+    "fields": {
+      "categoria": "sql",
+      "dificuldade": 1,
+      "enunciado": "Qual comando apaga todas as linhas mantendo a estrutura da tabela, sem percorrer linha a linha?",
+      "codigo": "",
+      "linguagem": "",
+      "alternativas": [
+        "DELETE FROM tabela",
+        "DROP TABLE tabela",
+        "TRUNCATE TABLE tabela",
+        "ALTER TABLE tabela"
+      ],
+      "correta": 2,
+      "explicacao": "TRUNCATE esvazia a tabela de uma vez e costuma reiniciar os contadores de identidade. DELETE percorre linha a linha, aceita WHERE e dispara triggers. DROP apaga a tabela inteira, estrutura junto."
+    }
+  },
+  {
+    "model": "jogo.pergunta",
+    "pk": 5,
+    "fields": {
+      "categoria": "python",
+      "dificuldade": 1,
+      "enunciado": "O que esse código imprime?",
+      "codigo": "print([x * 2 for x in range(3)])",
+      "linguagem": "python",
+      "alternativas": [
+        "[0, 2, 4]",
+        "[2, 4, 6]",
+        "[1, 2, 3]",
+        "[0, 1, 2]"
+      ],
+      "correta": 0,
+      "explicacao": "range(3) produz 0, 1 e 2 — o 3 fica de fora. Cada item é multiplicado por 2, resultando em [0, 2, 4]."
+    }
+  },
+  {
+    "model": "jogo.pergunta",
+    "pk": 6,
+    "fields": {
+      "categoria": "python",
+      "dificuldade": 3,
+      "enunciado": "O que aparece no console?",
+      "codigo": "def add(item, lista=[]):\n    lista.append(item)\n    return lista\n\nprint(add(1))\nprint(add(2))",
+      "linguagem": "python",
+      "alternativas": [
+        "[1] e [2]",
+        "[1] e [1, 2]",
+        "[1, 2] e [1, 2]",
+        "Erro em tempo de execução"
+      ],
+      "correta": 1,
+      "explicacao": "O valor padrão é criado uma única vez, quando a função é definida — a mesma lista é reaproveitada em toda chamada. O jeito seguro é lista=None e criar a lista dentro da função."
+    }
+  },
+  {
+    "model": "jogo.pergunta",
+    "pk": 7,
+    "fields": {
+      "categoria": "python",
+      "dificuldade": 2,
+      "enunciado": "Qual o valor impresso?",
+      "codigo": "a = [1, 2, 3]\nb = a\nb.append(4)\nprint(len(a))",
+      "linguagem": "python",
+      "alternativas": [
+        "3",
+        "4",
+        "2",
+        "Erro: a é imutável"
+      ],
+      "correta": 1,
+      "explicacao": "b = a copia a referência, não a lista. Os dois nomes apontam para o mesmo objeto na memória. Para copiar de verdade: b = a.copy() ou b = a[:]."
+    }
+  },
+  {
+    "model": "jogo.pergunta",
+    "pk": 8,
+    "fields": {
+      "categoria": "python",
+      "dificuldade": 2,
+      "enunciado": "Qual a saída dessa linha?",
+      "codigo": "print(bool([]), bool(\"False\"), bool(0.0))",
+      "linguagem": "python",
+      "alternativas": [
+        "False True False",
+        "True True False",
+        "False False False",
+        "True False False"
+      ],
+      "correta": 0,
+      "explicacao": "Lista vazia e zero são falsy. Já \"False\" é uma string não vazia — e qualquer string com pelo menos um caractere é truthy, inclusive \"0\"."
+    }
+  },
+  {
+    "model": "jogo.pergunta",
+    "pk": 9,
+    "fields": {
+      "categoria": "logica",
+      "dificuldade": 2,
+      "enunciado": "Qual a complexidade de tempo da busca binária num vetor ordenado de n elementos?",
+      "codigo": "",
+      "linguagem": "",
+      "alternativas": [
+        "O(n)",
+        "O(log n)",
+        "O(n log n)",
+        "O(1)"
+      ],
+      "correta": 1,
+      "explicacao": "A cada comparação metade do vetor é descartada. Quantas vezes n pode ser dividido por 2 até sobrar 1 elemento? log na base 2 de n vezes — daí o O(log n)."
+    }
+  },
+  {
+    "model": "jogo.pergunta",
+    "pk": 10,
+    "fields": {
+      "categoria": "logica",
+      "dificuldade": 2,
+      "enunciado": "Quantas vezes o corpo do laço executa?",
+      "codigo": "x = 10\npassos = 0\nwhile x > 0:\n    x -= 3\n    passos += 1\nprint(passos)",
+      "linguagem": "python",
+      "alternativas": [
+        "3",
+        "4",
+        "5",
+        "O laço nunca termina"
+      ],
+      "correta": 1,
+      "explicacao": "x passa por 7, 4, 1 e depois -2. A condição só falha quando x fica negativo, então o corpo executou 4 vezes."
+    }
+  },
+  {
+    "model": "jogo.pergunta",
+    "pk": 11,
+    "fields": {
+      "categoria": "logica",
+      "dificuldade": 1,
+      "enunciado": "Qual estrutura segue o princípio LIFO — o último a entrar é o primeiro a sair?",
+      "codigo": "",
+      "linguagem": "",
+      "alternativas": [
+        "Fila",
+        "Pilha",
+        "Lista ligada",
+        "Árvore binária"
+      ],
+      "correta": 1,
+      "explicacao": "Pilha: empilha no topo e desempilha do topo. A fila é FIFO, o primeiro a entrar sai primeiro. A pilha de chamadas de qualquer programa funciona exatamente assim."
+    }
+  },
+  {
+    "model": "jogo.pergunta",
+    "pk": 12,
+    "fields": {
+      "categoria": "logica",
+      "dificuldade": 1,
+      "enunciado": "Qual o resultado da expressão?",
+      "codigo": "resultado = (True and False) or not False",
+      "linguagem": "python",
+      "alternativas": [
+        "True",
+        "False",
+        "None",
+        "Erro de sintaxe"
+      ],
+      "correta": 0,
+      "explicacao": "True and False dá False; not False dá True; False or True dá True. A ordem de precedência é not, depois and, depois or."
+    }
+  },
+  {
+    "model": "jogo.pergunta",
+    "pk": 13,
+    "fields": {
+      "categoria": "tech",
+      "dificuldade": 1,
+      "enunciado": "Qual faixa de status HTTP indica que o erro foi do servidor?",
+      "codigo": "",
+      "linguagem": "",
+      "alternativas": [
+        "2xx",
+        "3xx",
+        "4xx",
+        "5xx"
+      ],
+      "correta": 3,
+      "explicacao": "2xx é sucesso, 3xx redirecionamento, 4xx erro do cliente (requisição inválida, sem permissão) e 5xx erro do servidor — aí a culpa é de quem hospeda a aplicação."
+    }
+  },
+  {
+    "model": "jogo.pergunta",
+    "pk": 14,
+    "fields": {
+      "categoria": "tech",
+      "dificuldade": 2,
+      "enunciado": "Você já enviou um commit para o repositório remoto e precisa desfazê-lo sem reescrever o histórico. Qual comando usar?",
+      "codigo": "",
+      "linguagem": "",
+      "alternativas": [
+        "git reset --hard",
+        "git revert",
+        "git checkout",
+        "git stash"
+      ],
+      "correta": 1,
+      "explicacao": "git revert cria um novo commit que desfaz as mudanças do anterior — o histórico continua íntegro para quem já baixou. reset --hard reescreve o histórico e quebra o repositório dos outros."
+    }
+  },
+  {
+    "model": "jogo.pergunta",
+    "pk": 15,
+    "fields": {
+      "categoria": "tech",
+      "dificuldade": 3,
+      "enunciado": "Numa API REST, qual método deve ser idempotente — repetir a chamada leva ao mesmo estado final?",
+      "codigo": "",
+      "linguagem": "",
+      "alternativas": [
+        "POST",
+        "PUT",
+        "Nenhum deles",
+        "Todos, sem exceção"
+      ],
+      "correta": 1,
+      "explicacao": "PUT substitui o recurso inteiro: mandar a mesma requisição dez vezes deixa o servidor no mesmo estado. POST cria um recurso novo a cada chamada — dez chamadas, dez registros."
+    }
+  },
+  {
+    "model": "jogo.pergunta",
+    "pk": 16,
+    "fields": {
+      "categoria": "tech",
+      "dificuldade": 2,
+      "enunciado": "Qual princípio do SOLID diz que uma classe deve ter apenas um motivo para mudar?",
+      "codigo": "",
+      "linguagem": "",
+      "alternativas": [
+        "Responsabilidade Única",
+        "Aberto/Fechado",
+        "Substituição de Liskov",
+        "Inversão de Dependência"
+      ],
+      "correta": 0,
+      "explicacao": "É o S de SOLID (Single Responsibility). Uma classe que formata relatório e também grava no banco tem dois motivos para mudar — e duas chances de quebrar por motivos diferentes."
+    }
+  }
+]

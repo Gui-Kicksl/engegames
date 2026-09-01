@@ -1,0 +1,174 @@
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap");
+
+:root,
+html[data-theme="light"] {
+  --primary: #173C47;
+  --secondary: #173C47;
+  --accent: #C9A227;
+  --primary-fg: #F3EDDF;
+
+  --header-color: #F3EDDF;
+  --header-branding-color: #C9A227;
+  --header-bg: #12333D;
+  --header-link-color: #F3EDDF;
+
+  --breadcrumbs-fg: #C9A227;
+  --breadcrumbs-link-fg: #F3EDDF;
+  --breadcrumbs-bg: #1A4753;
+
+  --link-fg: #1F5C6E;
+  --link-hover-color: #AE2B32;
+  --link-selected-fg: #AE2B32;
+
+  --button-bg: #173C47;
+  --button-fg: #F3EDDF;
+  --button-hover-bg: #1F5C6E;
+  --default-button-bg: #C9A227;
+  --default-button-hover-bg: #B08F1E;
+  --close-button-bg: #7A7168;
+
+  --body-fg: #2A2723;
+  --body-bg: #F6F3EC;
+  --body-quiet-color: #6B635A;
+  --body-loud-color: #14120F;
+
+  --darkened-bg: #EDE8DC;
+  --selected-bg: #F5EFD9;
+  --selected-row: #FBF3D6;
+
+  --font-family-primary: "Instrument Sans", -apple-system, "Segoe UI", sans-serif;
+  --font-family-monospace: "JetBrains Mono", ui-monospace, monospace;
+}
+
+#branding h1,
+#branding h1 a:link,
+#branding h1 a:visited {
+  font-family: "Fraunces", Georgia, serif;
+  font-weight: 700;
+  letter-spacing: .01em;
+  font-size: 22px;
+}
+
+#header {
+  padding: 14px 40px;
+  border-bottom: 3px solid var(--accent);
+}
+
+.module h2,
+.module caption,
+.inline-group h2 {
+  font-family: "Instrument Sans", sans-serif;
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  font-weight: 700;
+  background: var(--primary);
+}
+
+#content h1,
+.dashboard #content h1 {
+  font-family: "Fraunces", Georgia, serif;
+  font-weight: 700;
+  font-size: 26px;
+}
+
+#changelist table thead th {
+  font-size: 11px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+#changelist table tbody tr td {
+  vertical-align: middle;
+  padding: 10px 8px;
+}
+
+#changelist-form .results {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(26, 25, 23, .08);
+}
+
+.button, input[type=submit], input[type=button], .submit-row input, a.button {
+  border-radius: 999px;
+  font-weight: 600;
+  letter-spacing: .01em;
+}
+
+.submit-row {
+  border-radius: 10px;
+}
+
+/* formulário de pergunta */
+.alt-input {
+  width: 100% !important;
+  max-width: 640px;
+  font-size: 14px;
+  padding: 8px 10px;
+}
+
+textarea.campo-codigo {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  background: #11262D;
+  color: #DCE6E4;
+  border-radius: 8px;
+  padding: 12px 14px;
+  border: 0;
+  width: 100%;
+  max-width: 720px;
+}
+
+.form-row .radiolist {
+  display: flex;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+}
+
+.form-row .radiolist li {
+  list-style: none;
+  margin: 0;
+}
+
+.form-row .radiolist label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border: 1px solid rgba(26, 25, 23, .2);
+  border-radius: 999px;
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 700;
+  cursor: pointer;
+  background: #fff;
+  transition: background .15s, border-color .15s;
+}
+
+.form-row .radiolist label:hover {
+  border-color: var(--accent);
+  background: #FBF6E4;
+}
+
+fieldset.module {
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(26, 25, 23, .06);
+  margin-bottom: 18px;
+}
+
+.help, p.help, div.help {
+  font-size: 12.5px;
+  color: var(--body-quiet-color);
+}
+
+#changelist-filter h2,
+#changelist-filter h3 {
+  font-family: "Instrument Sans", sans-serif;
+}
+
+.paginator {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+}
